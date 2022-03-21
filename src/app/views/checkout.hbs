@@ -1,0 +1,153 @@
+{{!-- Head session --}}
+{{#section 'head'}}
+<title>13 Team</title>
+{{/section}}
+
+<link rel="stylesheet" href="css/checkout.css">
+
+<section class="checkout-page">
+  {{#if error}}
+  <div class="error">
+    <i class="fal fa-shopping-cart "></i>
+    <i class="fas fa-exclamation-triangle"></i>
+    <h2 class="error__title">có vẻ giỏ hàng của bạn đang gặp vấn đề</h2>
+    <h3 class="error__subtitle">hãy liên hệ các admin để nhận hỗ trợ</h3>
+    <a href="/" class="cancel-btn">quay về trang chủ</a>
+  </div>
+
+  {{else}}
+  <aside class="box cart-container">
+    <div class="box__heading">
+      <span>1</span>
+      <h2>giỏ hàng</h2>
+    </div>
+    {{#if emptyCart}}
+    <div class="empty-cart">
+      <i class="fal fa-shopping-cart "></i>
+      <i class="fas fa-sad-tear "></i>
+      <h2 class="error__title">giỏ hàng của bạn đang trống</h2>
+      <h3 class="error__subtitle">hãy tiếp tục mua sắm để có thể thanh toán</h3>
+      <a href="/phone" class="cancel-btn">mua sắm ngay</a>
+    </div>
+    {{else}}
+    <ul class="cart">
+      {{#each itemList}}
+      <li class="cart__item">
+        <div class="item__image">
+          <a href="/{{this.optionID.item.type}}/{{this.optionID.slug}}-{{this.optionID.detail}}">
+            <img src="{{this.optionID.color.[0].image}}">
+          </a>
+        </div>
+        <div class="item__detail" id="{{this.optionID._id}}">
+          <i title="Xóa sản phầm" class="far fa-times remove-item"></i>
+          <h2 class="detail__product-name">
+            {{this.optionID.item.name}}
+          </h2>
+          <div class="detail__item-price">{{currentChange this.optionID.color.[0].price}}</div>
+          <ul class="detail__product-options">
+            <li class="RAM">
+              Tùy chọn: {{this.optionID.detail}}
+            </li>
+            <li class="color">
+              Màu: {{this.color}}
+            </li>
+          </ul>
+
+          <div class="detail__quantity">
+            <button class="decrease-item"><i class="fal fa-minus"></i></button>
+            <input class="quantity" type="number" size="4" required maxlength="12" min="0" max="99" step="1"
+              value="{{this.num}}">
+            <button class="increase-item"><i class=" fal fa-plus"></i></button>
+          </div>
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+    <div class="order ">
+      <dl class="order__summary sub-total">
+        <dt class="order__summary--label">giỏ hàng</dt>
+        <dd class="order__summary--decription">{{currentChange subTotal}}</dd>
+      </dl>
+      <dl class="order__summary shipping-fee">
+        <dt class="order__summary--label">phí vận chuyển</dt>
+        <dd class="order__summary--decription">{{currentChange 30000}}</dd>
+      </dl>
+    </div>
+    <div class="total">
+      <dl class="order__summary">
+        <dt class="order__summary--label">tổng cộng</dt>
+        <dd class="order__summary--decription">{{currentChange total}}</dd>
+      </dl>
+    </div>
+    <form name="delete-form" method="POST" action=""></form>
+
+    {{/if}}
+  </aside>
+  <div class="box delivery-info">
+    <script>
+      var emptyCart = document.querySelector(".empty-cart");
+      if (emptyCart) {
+        document.querySelector(".delivery-info").style.opacity = 0;
+        document.querySelector(".cart-container").style.width = "40%";
+      }
+    </script>
+    <div class="box__heading">
+      <span>2</span>
+      <h2>thông tin vận chuyển</h2>
+    </div>
+    <div class="user-information">
+      <h2 class="greeting">xin chào {{firstName userInfo.name}}</h2>
+      <h3 class="sub-heading">hãy chắc chắn rằng thông tin vận chuyển của bạn là chính xác</h3>
+      <form method="POST" action="/checkout/purchase">
+        <div class="form-group">
+          <input type="text" id="fullName" value="{{userInfo.name}}" placeholder=" ">
+          <label for="fullName">họ và tên</label>
+        </div>
+        <div class="form-group">
+          <input type="tel" id="phoneNumber" value="{{userInfo.phone}}" placeholder=" ">
+          <label for="phoneNumber">số điện thoại</label>
+        </div>
+        <div class=" form-group">
+          <input type="text" id="provice/city" value="{{userInfo.address.province}}" placeholder=" ">
+          <label for="provice/city">tỉnh/thành phố
+          </label>
+        </div>
+        <div class="form-group">
+          <input type="text" id="district" value="{{userInfo.address.district}}" placeholder=" ">
+          <label for="district">quận/huyện
+          </label>
+        </div>
+        <div class="form-group">
+          <input type="text" id="sub-district" value="{{userInfo.address.ward}}" placeholder=" ">
+          <label for="sub-district">phường/xã
+          </label>
+        </div>
+        <div class="form-group">
+          <input type="text" id="house-number" value="{{userInfo.address.addressdetail}}" placeholder=" "
+            placeholder=" Nhập số nhà, toà nhà, tên đường" aria-describedby="home-number-help">
+          <label for="house-number">số nhà, toà nhà, tên đường
+          </label>
+          <small id="home-number-help">VD: 24 Toà nhà 3 Dương Kỳ Hiệp</small>
+        </div>
+        <button type="submit" class="confirm-btn">Thanh toán</button>
+        <button class="cancel-btn" formaction="/user/info" formmethod="get">Cập nhật thông tin</button>
+      </form>
+
+    </div>
+  </div>
+  <div class="remove-modal">
+    <div class="modal-container">
+      <div class="modal__content">Xóa sản phẩm khỏi giỏ hàng?</div>
+      <div class="modal__footer">
+        <button class="modal__button--confirm confirm-btn">
+          Xoá
+        </button>
+        <button class="modal__button--cancel cancel-btn">
+          Huỷ
+        </button>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+</section>
+<script src="/js/checkout.js"></script>
