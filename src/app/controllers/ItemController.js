@@ -47,7 +47,7 @@ class ItemController {
               console.log(itemPhone);
             });
             data = data.filter((dataitem) => dataitem.slug != type);
-            res.render("detailItem", {
+            res.json({
               path: path,
               item: item,
               color: mainItem[0].color,
@@ -108,7 +108,7 @@ class ItemController {
               console.log(itemPhone);
             });
             data = data.filter((dataitem) => dataitem.slug != type);
-            res.render("detailItem", {
+            res.json({
               path: path,
               item: item,
               color: mainItem[0].color,
@@ -169,7 +169,7 @@ class ItemController {
               console.log(itemPhone);
             });
             data = data.filter((dataitem) => dataitem.slug != type);
-            res.render("detailItem", {
+            res.status(200).json({
               path: path,
               item: item,
               color: mainItem[0].color,
@@ -230,7 +230,7 @@ class ItemController {
               console.log(itemPhone);
             });
             data = data.filter((dataitem) => dataitem.slug != type);
-            res.render("detailItem", {
+            res.json({
               path: path,
               item: item,
               color: mainItem[0].color,

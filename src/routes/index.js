@@ -11,18 +11,18 @@ const tabletrouter = require("./tablet");
 const accessorytrouter = require("./accessory");
 
 function route(app) {
-	app.use("/search", searchrouter);
-	app.use("/laptop", laptoprouter);
-	app.use("/accessory", accessorytrouter);
-	app.use("/tablet", tabletrouter);
-	app.use("/address", addressrouter);
-	app.use("/purchase", purchaserouter);
-	app.use("/account", accountrouter);
-	app.use("/checkout", checkoutrouter);
-	app.use("/phone", phonerouter);
-	app.use("/user", userrouter);
-	app.get("/", (req, res) => {
-		res.render("home");
-	});
+  app.use("/api/search", searchrouter);
+  app.use("/api/laptop", laptoprouter);
+  app.use("/api/accessory", accessorytrouter);
+  app.use("/api/tablet", tabletrouter);
+  app.use("/api/address", addressrouter);
+  app.use("/api/purchase", purchaserouter);
+  app.use("/api/account", accountrouter);
+  app.use("/api/checkout", checkoutrouter);
+  app.use("/api/phone", phonerouter);
+  app.use("/api/user", userrouter);
+  app.get("/", (req, res) => {
+    res.send("Hello");
+  });
 }
 module.exports = route;
